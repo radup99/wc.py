@@ -7,6 +7,7 @@ def get_file_stats(file, options):
     f = open(file)
     text = f.read()
     stats = []
+    max_len = -1
 
     if options['-l']:
         line_count = text.count('\n')
@@ -26,9 +27,8 @@ def get_file_stats(file, options):
 
     if options['-L']:
         max_len = get_max_line_len(text)
-        stats.append(max_len)
 
-    return stats
+    return stats, max_len
 
 
 def get_max_line_len(file):
@@ -41,19 +41,45 @@ def get_max_line_len(file):
     return max_len
 
 
+def get_total_stats(all_stats):
+    col_nums = len(all_stats[0])
+    total_stats = [0] * col_nums
+
+    for row in all_stats:
+        for i in range(col_nums):
+            total_stats[i] += row[i]
+
+    return total_stats
+
+
 def process_files(files, options):
     all_stats = []
+    overall_max = -1
 
     for file in files:
-        stats = get_file_stats(file, options)
+        stats, max_len = get_file_stats(file, options)
         all_stats.append(stats)
-        print(*stats, file)
+        
+        if max_len > overall_max:
+            overall_max = max_len
+
+        if stats != []:
+            print(*stats, "", end="")
+        if options['-L']:
+            print(max_len, "", end="")
+        print(file)
+
+    if len(files) > 1:
+        total_stats = get_total_stats(all_stats)
+        if total_stats != []:
+            print(*total_stats, "", end="")
+        if options['-L']:
+            print(overall_max, "", end="")
+        print("Total")
 
 
 def main():
     options, files = check_arguments(sys.argv[1:])
-    all_stats = []
-
     process_files(files, options)
 
 
