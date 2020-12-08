@@ -4,8 +4,12 @@ import os
 
 
 def get_file_stats(file, options):
-    f = open(file)
-    text = f.read()
+    if file == "-" or file == " ":
+        text = sys.stdin.read()
+    else:
+        f = open(file)
+        text = f.read()
+
     stats = []
     max_len = -1
 

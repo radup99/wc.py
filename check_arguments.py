@@ -62,7 +62,7 @@ def check_arguments(args):
         options = default_options
 
     if files_count == 0:
-        files = ["-"]
+        files = [" "]
 
     return options, files
 
