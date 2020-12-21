@@ -22,7 +22,7 @@ def get_file_stats(file, options):
         stats.append(word_count)
 
     if options['-c']:
-        byte_count = os.path.getsize(file)
+        byte_count = len(text.encode('utf-8'))
         stats.append(byte_count)
 
     if options['-m']:
@@ -84,7 +84,8 @@ def process_files(files, options):
 
 def main():
     options, files = check_arguments(sys.argv[1:])
-    process_files(files, options)
+    if options != -1 and files != -1:
+    	process_files(files, options)
 
 
 if __name__ == '__main__':
