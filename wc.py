@@ -5,6 +5,7 @@ import sys
 def get_file_stats(file, options):
     if file == "-" or file == " ":  # keyboard input instead of file
         text = sys.stdin.read()  # reads input until EOF
+        print("")
     else:
         f = open(file)
         text = f.read()

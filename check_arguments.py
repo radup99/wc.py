@@ -99,15 +99,16 @@ def get_files_from_txt(arg, files):
 
     if source_file == "-":
         source = sys.stdin.read()
+        print("")
     else:
         try:
-            source = open(source_file)
+            source = open(source_file).read()
         except FileNotFoundError:
             print(f"wc: cannot open '{source_file}' for reading: "
                   "No such file or directory")
             return -1
 
-    for file in source.read().split("\n"):
+    for file in source.split("\n"):
         if is_file_valid(file):
             files.append(file)
             count += 1
