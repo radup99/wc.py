@@ -32,11 +32,11 @@ def check_arguments(args):
 
     for arg in args:
         if arg.startswith("--files0-from="):
-                count = get_files_from_txt(arg, files)
-                if count != -1:
-                    files_count += count
-                else:
-                    return -1, -1
+            count = get_files_from_txt(arg, files)
+            if count != -1:
+                files_count += count
+            else:
+                return -1, -1
 
         elif arg.startswith("--"):
             if arg not in long_options:
@@ -76,7 +76,7 @@ def check_arguments(args):
 
 def is_file_valid(arg):
     try:
-        f = open(arg)
+        open(arg)
     except FileNotFoundError:
         print(f"wc: {arg}: No such file or directory")
         return False
@@ -91,7 +91,9 @@ def get_files_from_txt(arg, files):
     try:
         source = open(source_file)
     except FileNotFoundError:
-        print(f"wc: cannot open '{source_file}' for reading: No such file or directory")
+        print(f"wc: cannot open '{source_file}' for reading: "
+              "No such file or directory")
+        return -1
     else:
         for file in source.read().split("\n"):
             if is_file_valid(file) and file != " ":

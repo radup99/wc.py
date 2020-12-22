@@ -85,7 +85,7 @@ def process_files(files, options):
 def main():
     options, files = check_arguments(sys.argv[1:])
     if options != -1 and files != -1:
-    	process_files(files, options)
+        process_files(files, options)
 
 
 if __name__ == '__main__':
