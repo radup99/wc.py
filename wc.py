@@ -1,17 +1,16 @@
 from check_arguments import check_arguments
 import sys
-import os
 
 
 def get_file_stats(file, options):
-    if file == "-" or file == " ":
-        text = sys.stdin.read()
+    if file == "-" or file == " ":  # keyboard input instead of file
+        text = sys.stdin.read()  # reads input until EOF
     else:
         f = open(file)
         text = f.read()
 
     stats = []
-    max_len = -1
+    max_len = -1 # maximum line length found in file
 
     if options['-l']:
         line_count = text.count('\n')
@@ -58,7 +57,7 @@ def get_total_stats(all_stats):
 
 def process_files(files, options):
     all_stats = []
-    overall_max = -1
+    overall_max = -1  # maximum line length out of all files
 
     for file in files:
         stats, max_len = get_file_stats(file, options)

@@ -1,6 +1,6 @@
 import sys
 
-default_options = {
+default_options = {  # if no options are specified through command line
     "-l": True,
     "-w": True,
     "-c": True,
@@ -31,7 +31,13 @@ def check_arguments(args):
     files_count = 0
 
     for arg in args:
-        if arg.startswith("--files0-from="):
+        # first checks if the argument is a double dash command
+        if arg == "--help":
+            help_text = open("help.txt").read()
+            print(help_text)
+            return -1, -1
+
+        elif arg.startswith("--files0-from="):
             count = get_files_from_txt(arg, files)
             if count != -1:
                 files_count += count
@@ -46,6 +52,7 @@ def check_arguments(args):
                 options[long_options[arg]] = True
                 option_count += 1
 
+        # checks if it's a single dash command
         elif arg == "-":
             files.append("-")
             files_count += 1
@@ -58,6 +65,7 @@ def check_arguments(args):
                 options[arg] = True
                 option_count += 1
 
+        # if it's not either type of command, the argument is considered a file
         else:
             if is_file_valid(arg):
                 files.append(arg)
@@ -65,11 +73,12 @@ def check_arguments(args):
             else:
                 return -1, -1
 
-    if option_count == 0:
+    # selects the default options since no options were specified by the user
+    if option_count == 0:  
         options = default_options
 
     if files_count == 0:
-        files = [" "]
+        files = [" "]  # keyboard input instead of files
 
     return options, files
 
@@ -88,26 +97,21 @@ def get_files_from_txt(arg, files):
     source_file = arg[14:]
     count = 0
 
-    try:
-        source = open(source_file)
-    except FileNotFoundError:
-        print(f"wc: cannot open '{source_file}' for reading: "
-              "No such file or directory")
-        return -1
+    if source_file == "-":
+        source = sys.stdin.read()
     else:
-        for file in source.read().split("\n"):
-            if is_file_valid(file) and file != " ":
-                files.append(file)
-                count += 1
-            else:
-                return -1
+        try:
+            source = open(source_file)
+        except FileNotFoundError:
+            print(f"wc: cannot open '{source_file}' for reading: "
+                  "No such file or directory")
+            return -1
+
+    for file in source.read().split("\n"):
+        if is_file_valid(file):
+            files.append(file)
+            count += 1
+        else:
+            return -1
 
     return count
-
-
-def main():
-    print(check_arguments(sys.argv[1:]))
-
-
-if __name__ == '__main__':
-    main()

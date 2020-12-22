@@ -4,7 +4,7 @@ WC - Proiect categoria C, ID 12
 Instructiuni:
 
 Se executa fisierul wc.py, adaugand ca argumente in linia de comanda optiunile dorite si numele fisierelor. Daca nu sunt specificate optiuni, va afisa implicit numarul de 
-caractere newline, cuvinte si bytes ale fisierelor cerute. Daca nu sunt date fisiere ca argumente, se va citi de la tastatura un fisier pana la citirea caracterului EOF.
+caractere newline, cuvinte si bytes ale fisierelor cerute. Daca nu sunt date fisiere ca argumente, se va citi de la tastatura un text pana la citirea caracterului EOF.
 
 Exemplu:
 - python wc.py -c -l fisier1.txt fisier2.txt
